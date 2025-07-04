@@ -1,0 +1,24 @@
+{
+    "name": "abdelrhman/analytics-sys",
+    "autoload": {
+        "psr-4": {
+            "AnalyticsSystem\\": "src/",
+            "AnalyticsSystem\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "abdelrhman-saeed/route": "^3.3",
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "authors": [
+        {
+            "name": "abdelrhman-saeed",
+            "email": "abdelrhmansaeed001@gmail.com"
+        }
+    ]
+}
