@@ -1,0 +1,50 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use AnalyticsSystem\DB\Connection;
+
+
+$pdo = (new Connection)->pdo;
+
+
+// Drop tables
+$pdo->exec("DROP TABLE IF EXISTS order_items");
+$pdo->exec("DROP TABLE IF EXISTS orders");
+$pdo->exec("DROP TABLE IF EXISTS products");
+
+// Create products table
+$pdo->exec("
+
+    CREATE TABLE products (
+        id      INTEGER PRIMARY KEY AUTOINCREMENT,
+        name    TEXT,
+        price   INTEGER
+    )
+");
+
+// Create orders table
+$pdo->exec("
+
+    CREATE TABLE orders(
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        created_at  TEXT    NOT NULL
+    )
+");
+
+// Create order_items table (pivot)
+$pdo->exec("
+
+    CREATE TABLE order_items (
+
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        order_id    INTEGER,
+        product_id  INTEGER,
+        quantity    INTEGER,
+
+        FOREIGN     KEY(order_id)   REFERENCES orders(id)   ON DELETE CASCADE,
+        FOREIGN     KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
+    )
+");
