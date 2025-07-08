@@ -7,3 +7,4 @@ use Symfony\Component\HttpFoundation\{Request, Response};
 
 // Initialize the routing system
 Route::setup('src/Routes', Request::createFromGlobals(), new Response);
+

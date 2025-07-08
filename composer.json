@@ -10,7 +10,9 @@
         "abdelrhman-saeed/route": "^3.3",
         "doctrine/orm": "^3",
         "doctrine/dbal": "^4",
-        "symfony/cache": "^7"
+        "symfony/cache": "^7",
+        "predis/predis": "^3.0",
+        "abdelrhman-saeed/dto": "^2.2"
     },
     "require-dev": {
         "phpunit/phpunit": "*"

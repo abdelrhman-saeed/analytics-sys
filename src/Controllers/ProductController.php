@@ -3,6 +3,7 @@
 namespace AnalyticsSystem\Controllers;
 
 use Symfony\Component\HttpFoundation\{Request, Response, JsonResponse};
+use AnalyticsSystem\DTO\ProductDTO;
 
 
 class ProductController extends BaseController
@@ -30,18 +31,30 @@ class ProductController extends BaseController
 
     public function save()
     {
-        $product = json_decode($this->request->getContent(), true);
+        $productDTO = new ProductDTO(json_decode($this->request->getContent(), true) ?? []);
+
+        if (! empty($productDTO->getErrors())) {
+            return new JsonResponse($productDTO->getErrors(), 403);
+        }
+
+        $data = $productDTO->getValidated();
 
         $this->pdo
             ->prepare("INSERT INTO products (name, price) VALUES (?, ?)")
-            ->execute([$product['name'], $product['price']]);
+            ->execute([$data['name'], $data['price']]);
 
-        return new JsonResponse($product + ['id' => $this->pdo->lastInsertId()]);
+        return new JsonResponse($data + ['id' => $this->pdo->lastInsertId()]);
     }
 
     public function update(int $id)
     {
-        $data   = json_decode($this->request->getContent(), true);
+        $productDTO = new ProductDTO(json_decode($this->request->getContent(), true) ?? []);
+
+        if (! empty($productDTO->getErrors())) {
+            return new JsonResponse($productDTO->getErrors(), 403);
+        }
+
+        $data   = $productDTO->getValidated();
         $query  = "UPDATE products SET ";
 
         foreach (array_keys($data) as $column) {
