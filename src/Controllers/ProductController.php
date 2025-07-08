@@ -11,22 +11,21 @@ class ProductController extends BaseController
 
     public function index(): JsonResponse
     {
-        return new JsonResponse([
+        return (new JsonResponse([
             'products' => $this->pdo
                 ->query("SELECT * FROM products")
                 ->fetchAll(\PDO::FETCH_ASSOC)
-        ]);
+        ]))->send();
     }
 
     public function show(int $id)
     {
-
         ($stmt = $this->pdo->prepare("SELECT * from products WHERE id = ?"))
             ->execute([$id]);
 
         return ($product = $stmt->fetch(\PDO::FETCH_ASSOC))
-            ? new JsonResponse($product)
-            : new Response(status: 404);
+            ? (new JsonResponse($product))->send()
+            : (new JsonResponse(['error' => 'product not found!'], 404))->send();
     }
 
     public function save()
@@ -34,7 +33,7 @@ class ProductController extends BaseController
         $productDTO = new ProductDTO(json_decode($this->request->getContent(), true) ?? []);
 
         if (! empty($productDTO->getErrors())) {
-            return new JsonResponse($productDTO->getErrors(), 403);
+            return (new JsonResponse($productDTO->getErrors(), 403))->send();
         }
 
         $data = $productDTO->getValidated();
@@ -43,7 +42,7 @@ class ProductController extends BaseController
             ->prepare("INSERT INTO products (name, price) VALUES (?, ?)")
             ->execute([$data['name'], $data['price']]);
 
-        return new JsonResponse($data + ['id' => $this->pdo->lastInsertId()]);
+        return (new JsonResponse($data + ['id' => $this->pdo->lastInsertId()]))->send();
     }
 
     public function update(int $id)
@@ -51,7 +50,7 @@ class ProductController extends BaseController
         $productDTO = new ProductDTO(json_decode($this->request->getContent(), true) ?? []);
 
         if (! empty($productDTO->getErrors())) {
-            return new JsonResponse($productDTO->getErrors(), 403);
+            return (new JsonResponse($productDTO->getErrors(), 403))->send();
         }
 
         $data   = $productDTO->getValidated();
@@ -68,7 +67,7 @@ class ProductController extends BaseController
             ->prepare($query)
             ->execute([...array_values($data)]);
 
-        return new JsonResponse(['message' => 'product updated!']);
+        return (new JsonResponse(['message' => 'product updated!']))->send();
     }
 
     public function delete(int $id)
@@ -78,7 +77,7 @@ class ProductController extends BaseController
             ->execute([$id]);
 
         return $res
-            ? new Response(status: 410)
-            : new JsonResponse(['error' => 'Server error!'], 500);
+            ? (new JsonResponse(['message'  => 'product deleted successfully']))->send()
+            : (new JsonResponse(['error'    => 'Server error!'], 500))->send();
     }
 }

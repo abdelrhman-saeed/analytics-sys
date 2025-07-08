@@ -11,7 +11,7 @@ class AnalyticsController extends BaseController
 
     public function index()
     {
-        return new JsonResponse($this->getAnalytics());
+        return (new JsonResponse($this->getAnalytics()))->send();
     }
 
     public function getAnalytics(): array

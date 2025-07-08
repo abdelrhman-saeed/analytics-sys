@@ -40,7 +40,6 @@ class OrderController extends BaseController
             return new JsonResponse(['id' => $orderId] + $orderItems);
         }
 
-
-        return new Response(status: 500);
+        return (new JsonResponse(['error' => 'Server error!'], 500))->send();
     }
 }
