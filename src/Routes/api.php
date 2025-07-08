@@ -1,7 +1,9 @@
 <?php
 
 use AbdelrhmanSaeed\Route\Api\Route;
-use AnalyticsSystem\Controllers\{ProductController, OrderController, AnalyticsController, OpenAIController};
+use AnalyticsSystem\Controllers\{
+    ProductController, OrderController, AnalyticsController, RecommendationsController
+};
 
 
 /**
@@ -19,5 +21,7 @@ Route::post('orders', [OrderController::class, 'save']);
  */
 Route::get('analytics', [AnalyticsController::class, 'index']);
 
-
-Route::get('recommendations', [OpenAIController::class, 'index']);
+/**
+ * recommendations
+ */
+Route::get('recommendations', [RecommendationsController::class, 'index']);
