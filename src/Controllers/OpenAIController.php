@@ -28,7 +28,7 @@ class OpenAIController extends BaseController
             'temperature'   => 0.7,
         ]);
 
-        curl_setopt_array( $ch = curl_init($_ENV['OPENAI_K']), [
+        curl_setopt_array($ch = curl_init($_ENV['OPENAI_K']), [
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => ["Content-Type: application/json", "Authorization: Bearer {$_ENV['OPENAI_K']}"],
             CURLOPT_POSTFIELDS      => $payload,
