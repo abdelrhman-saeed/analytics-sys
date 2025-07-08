@@ -14,7 +14,7 @@ class OrderController extends BaseController
         $orderDTO = new OrderDTO(json_decode($this->request->getContent(), true) ?? []);
 
         if (! empty($orderDTO->getErrors())) {
-            return new JsonResponse($orderDTO->getErrors(), 403);
+            return (new JsonResponse($orderDTO->getErrors(), 422))->send();
         }
 
         $orderItems = $orderDTO->getValidated() ['products'];
@@ -32,12 +32,12 @@ class OrderController extends BaseController
             $stmt->execute([$orderId, $item['product_id'], $item['quantity']]);
         }
 
-        if ($this->pdo->commit()) {
+        if ($this->pdo->commit())
+        {
+            (new Redis)->publish('broadcast', json_encode( (new AnalyticsController)->index() ));
 
-            $redis = new Redis();
-            $redis->publish('broadcast', json_encode((new AnalyticsController)->index()));
-
-            return new JsonResponse(['id' => $orderId] + $orderItems);
+            return (new JsonResponse(['id' => $orderId] + $orderItems))
+                ->send();
         }
 
         return (new JsonResponse(['error' => 'Server error!'], 500))->send();
