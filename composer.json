@@ -12,7 +12,8 @@
         "doctrine/dbal": "^4",
         "symfony/cache": "^7",
         "predis/predis": "^3.0",
-        "abdelrhman-saeed/dto": "^2.2"
+        "abdelrhman-saeed/dto": "^2.2",
+        "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
