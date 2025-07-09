@@ -199,6 +199,11 @@ WEATHER_CITY=Cairo
 ```bash
 vendor/bin/phpunit ./tests
 ```
+## Postman Collection
+
+You can test the API using the provided Postman collection:
+
+[🔗 Download Collection](./analytics.postman_collection.json)
 
 ## Contact
 
