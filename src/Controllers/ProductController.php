@@ -77,7 +77,7 @@ class ProductController extends BaseController
             ->execute([$id]);
 
         return $res
-            ? (new JsonResponse(['message'  => 'product deleted successfully']))->send()
+            ? (new JsonResponse(['message'  => 'product deleted successfully'], 410))->send()
             : (new JsonResponse(['error'    => 'Server error!'], 500))->send();
     }
 }

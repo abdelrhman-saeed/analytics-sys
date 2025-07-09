@@ -24,7 +24,7 @@ abstract class BaseTestCase extends TestCase
         $pdo->exec('DELETE FROM sqlite_sequence;');
     }
 
-    protected function request(string $method, string $path, string $body): array
+    protected function request(string $method, string $path, ?string $body = null): array
     {
         $url    = $this->host . $path;
         $method = strtoupper($method);
