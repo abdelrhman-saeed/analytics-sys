@@ -34,9 +34,9 @@ class OrderController extends BaseController
 
         if ($this->pdo->commit())
         {
-            (new Redis)->publish('broadcast', json_encode( (new AnalyticsController)->index() ));
+            (new Redis)->publish('broadcast', json_encode( (new AnalyticsController)->getAnalytics() ));
 
-            return (new JsonResponse(['id' => $orderId] + $orderItems))
+            return (new JsonResponse(['id' => $orderId, 'products' => $orderItems]))
                 ->send();
         }
 
